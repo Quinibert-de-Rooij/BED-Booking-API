@@ -2,37 +2,15 @@ import { Router } from "express";
 import createBooking from "../Services/Bookings/createBookings.js";
 import deleteBookingById from "../Services/Bookings/deleteBookingsById.js";
 import getBookings from "../Services/Bookings/getBookings.js";
-import getBookingById from "../Services/Bookings/getBookings.js";
+import getBookingById from "../Services/Bookings/getBookingsById.js";
 import updateBookingById from "../Services/Bookings/updateBookingsById.js";
 import authMiddleware from "../Middleware/auth.js";
 
 const router = Router();
 
-//Somehow I got 2 rows back from ID search.
-//From documentation online and lesson:
-//req.query should require ?
 router.get("/", async (req, res, next) => {
   try {
-    const {
-      id,
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus,
-    } = req.query;
-    const bookings = await getBookings(
-      id,
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus
-    );
+    const bookings = await getBookings();
     res.json(bookings);
   } catch (error) {
     next(error);
@@ -50,16 +28,23 @@ router.post("/", authMiddleware, async (req, res, next) => {
       totalPrice,
       bookingStatus,
     } = req.body;
-    const newBooking = await createBooking(
-      userId,
-      propertyId,
-      checkinDate,
-      checkoutDate,
-      numberOfGuests,
-      totalPrice,
-      bookingStatus
-    );
-    res.status(201).json(newBooking);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res
+        .status(400)
+        .json({ message: `Q says: 400 Bad request; Booking was not created.` });
+    } else {
+      const newBooking = await createBooking(
+        userId,
+        propertyId,
+        checkinDate,
+        checkoutDate,
+        numberOfGuests,
+        totalPrice,
+        bookingStatus
+      );
+      res.status(201).json(newBooking);
+    }
   } catch (error) {
     next(error);
   }
@@ -114,6 +99,9 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       totalPrice,
       bookingStatus,
     } = req.body;
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      console.log("Object missing");
+    }
     const updateBooking = await updateBookingById(id, {
       userId,
       propertyId,

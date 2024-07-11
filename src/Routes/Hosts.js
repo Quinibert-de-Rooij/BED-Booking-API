@@ -11,15 +11,7 @@ const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { id, name, email, phoneNumber, profilePicture, aboutMe } = req.query;
-    const hosts = await getHosts(
-      id,
-      name,
-      email,
-      phoneNumber,
-      profilePicture,
-      aboutMe
-    );
+    const hosts = await getHosts();
     res.json(hosts);
   } catch (error) {
     next(error);
@@ -37,16 +29,23 @@ router.post("/", authMiddleware, async (req, res, next) => {
       profilePicture,
       aboutMe,
     } = req.body;
-    const newHost = await createNewHost(
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      profilePicture,
-      aboutMe
-    );
-    res.status(201).json(newHost);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res
+        .status(400)
+        .json({ message: `Q says: 400 Bad request; Host was not created.` });
+    } else {
+      const newHost = await createNewHost(
+        username,
+        password,
+        name,
+        email,
+        phoneNumber,
+        profilePicture,
+        aboutMe
+      );
+      res.status(201).json(newHost);
+    }
   } catch (error) {
     next(error);
   }

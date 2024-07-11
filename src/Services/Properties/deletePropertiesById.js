@@ -2,11 +2,13 @@ import { PrismaClient } from "@prisma/client";
 
 const deletePropertyById = async (id) => {
   const prisma = new PrismaClient();
-  const property = await prisma.property.deleteMany({
+  const deleteProperty = await prisma.property.deleteMany({
     where: { id },
   });
-
-  return property.count > 0 ? id : null;
+  if (!deleteProperty || deleteProperty.count === 0) {
+    return false;
+  }
+  return true;
 };
 
 export default deletePropertyById;

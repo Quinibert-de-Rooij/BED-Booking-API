@@ -10,16 +10,7 @@ const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { id, username, name, email, phoneNumber, profilePicture } =
-      req.query;
-    const users = await getUsers(
-      id,
-      username,
-      name,
-      email,
-      phoneNumber,
-      profilePicture
-    );
+    const users = await getUsers();
     res.json(users);
   } catch (error) {
     next(error);
@@ -30,15 +21,23 @@ router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { username, password, name, email, phoneNumber, profilePicture } =
       req.body;
-    const newUser = await createUser(
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      profilePicture
-    );
-    res.status(201).json(newUser);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res
+        .status(400)
+        .json({ message: `Q says: 400 Bad request; User was not created.` });
+    } else {
+      console.log("start function");
+      const newUser = await createUser(
+        username,
+        password,
+        name,
+        email,
+        phoneNumber,
+        profilePicture
+      );
+      res.status(201).json(newUser);
+    }
   } catch (error) {
     next(error);
   }

@@ -1,3 +1,18 @@
+### V1.5.1
+
+Finalized the error messaging.
+Log the number of records to update info.
+
+### V1.5.0
+
+Added additional error handling on the create and update.
+Updated get request roll back to original open query.
+
+### V1.4.0
+
+Updated booking and resolved the issues with positive testing.
+Special thanks to Jordy from WINC academy to see the typo in filenaming.
+
 ### V1.3.1
 
 This version is ready to go!

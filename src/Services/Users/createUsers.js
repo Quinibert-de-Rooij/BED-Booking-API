@@ -10,8 +10,8 @@ const createUser = async (
   phoneNumber,
   profilePicture
 ) => {
+  console.log("user name: ", username);
   const prisma = new PrismaClient();
-
   const user = await prisma.user.create({
     data: {
       username,
@@ -22,7 +22,6 @@ const createUser = async (
       profilePicture,
     },
   });
-
   return user;
 };
 

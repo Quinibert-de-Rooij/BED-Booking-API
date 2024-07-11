@@ -2596,7 +2596,7 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n  \"id\": \"f0123456-78ab-cdef-0123-456789abcdef\",\n  \"userId\": \"a1234567-89ab-cdef-0123-456789abcdef\",\n  \"propertyId\": \"j2345678-90f1-2345-6789-abcdef012345\",\n  \"checkinDate\": \"2023-03-10T18:00:00.000Z\",\n  \"checkoutDate\": \"2023-03-15T10:00:00.000Z\",\n  \"numberOfGuests\": 2,\n  \"totalPrice\": 150.25,\n  \"bookingStatus\": \"confirmed\"\n}"
+                  "body": "{\n  \"id\": \"f0123456-78ab-cdef-0123-456789abcdef\",\n  \"userId\": \"a1234567-89ab-cdef-0123-456789abcdef\",\n  \"propertyId\": \"g9012345-67ef-0123-4567-89abcdef0123\",\n  \"checkinDate\": \"2023-03-10T18:00:00.000Z\",\n  \"checkoutDate\": \"2023-03-15T10:00:00.000Z\",\n  \"numberOfGuests\": 2,\n  \"totalPrice\": 150.25,\n  \"bookingStatus\": \"confirmed\"\n}"
                 },
                 {
                   "id": "c8a42270-b880-48b8-ba31-2b43685eba5b",

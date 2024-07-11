@@ -10,8 +10,7 @@ const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { id, name } = req.query;
-    const amenities = await getAmenities(id, name);
+    const amenities = await getAmenities();
     res.json(amenities);
   } catch (error) {
     next(error);
@@ -21,8 +20,15 @@ router.get("/", async (req, res, next) => {
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { name } = req.body;
-    const newAmenity = await createAmenity(name);
-    res.status(201).json(newAmenity);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res
+        .status(400)
+        .json({ message: `Q says: 400 Bad request; Amenity was not created.` });
+    } else {
+      const newAmenity = await createAmenity(name);
+      res.status(201).json(newAmenity);
+    }
   } catch (error) {
     next(error);
   }

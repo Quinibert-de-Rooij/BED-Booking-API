@@ -2,11 +2,13 @@ import { PrismaClient } from "@prisma/client";
 
 const deleteReviewById = async (id) => {
   const prisma = new PrismaClient();
-  const review = await prisma.review.deleteMany({
+  const deleteReview = await prisma.review.deleteMany({
     where: { id },
   });
-
-  return review.count > 0 ? id : null;
+  if (!deleteReview || deleteReview.count === 0) {
+    return false;
+  }
+  return true;
 };
 
 export default deleteReviewById;

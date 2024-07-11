@@ -10,30 +10,7 @@ const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const {
-      id,
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating,
-    } = req.query;
-    const properties = await getProperties(
-      id,
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating
-    );
+    const properties = await getProperties();
     res.json(properties);
   } catch (error) {
     next(error);
@@ -53,18 +30,25 @@ router.post("/", authMiddleware, async (req, res, next) => {
       hostId,
       rating,
     } = req.body;
-    const newProperty = await createProperty(
-      title,
-      description,
-      location,
-      pricePerNight,
-      bedroomCount,
-      bathRoomCount,
-      maxGuestCount,
-      hostId,
-      rating
-    );
-    res.status(201).json(newProperty);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res.status(400).json({
+        message: `Q says: 400 Bad request; Property was not created.`,
+      });
+    } else {
+      const newProperty = await createProperty(
+        title,
+        description,
+        location,
+        pricePerNight,
+        bedroomCount,
+        bathRoomCount,
+        maxGuestCount,
+        hostId,
+        rating
+      );
+      res.status(201).json(newProperty);
+    }
   } catch (error) {
     next(error);
   }

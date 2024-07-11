@@ -4,6 +4,15 @@ import { PrismaClient } from "@prisma/client";
 
 const updateBookingById = async (id, bookingUpdateData) => {
   const prisma = new PrismaClient();
+  const recordCount = await prisma.booking.count({
+    where: { id },
+  });
+  console.log("Q says: Records to update is: ", recordCount);
+  if (recordCount === 0) {
+    return false;
+  }
+
+  //Count > 0 found the records to update, now we try to update:
   const { userId, propertyId, ...data } = bookingUpdateData;
   const booking = await prisma.booking.update({
     where: { id },

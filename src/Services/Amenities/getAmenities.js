@@ -1,10 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 
-const getAmenities = async (id, name) => {
+const getAmenities = async () => {
   const prisma = new PrismaClient();
-  const amenities = await prisma.amenity.findMany({
-    where: { id, name },
-  });
+  const amenities = await prisma.amenity.findMany();
 
   return amenities;
 };

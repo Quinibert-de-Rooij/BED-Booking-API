@@ -10,8 +10,7 @@ const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { id, userId, propertyId, rating, comment } = req.query;
-    const reviews = await getReviews(id, userId, propertyId, rating, comment);
+    const reviews = await getReviews();
 
     res.json(reviews);
   } catch (error) {
@@ -22,8 +21,15 @@ router.get("/", async (req, res, next) => {
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { userId, propertyId, rating, comment } = req.body;
-    const newReview = await createReview(userId, propertyId, rating, comment);
-    res.status(201).json(newReview);
+    //If statement tip from stack overflow:
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+      res
+        .status(400)
+        .json({ message: `Q says: 400 Bad request; Review was not created.` });
+    } else {
+      const newReview = await createReview(userId, propertyId, rating, comment);
+      res.status(201).json(newReview);
+    }
   } catch (error) {
     next(error);
   }
