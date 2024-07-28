@@ -6,7 +6,7 @@ const updateAmenityById = async (id, amenityData) => {
   const recordCount = await prisma.amenity.count({
     where: { id },
   });
-  console.log("Q says: Records to update is: ", recordCount);
+  console.log(`Q says: Records to update is: `, recordCount);
   if (recordCount === 0) {
     return false;
   }

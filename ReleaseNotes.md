@@ -1,3 +1,11 @@
+### V2.2.1
+
+2 Main update is to console log so the API tells us more about the statusses returned.
+.1 Set (roll back from update 1.5.0) back queries to use: req.query
+.2 To get better search results added some functionality to the queries (contains and gte)
+
+..1 Improved some of the Q says: texts.
+
 ### V1.5.1
 
 Finalized the error messaging.

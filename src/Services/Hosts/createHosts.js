@@ -12,19 +12,25 @@ const createNewHost = async (
   aboutMe
 ) => {
   const prisma = new PrismaClient();
-  const host = await prisma.host.create({
-    data: {
-      username,
-      password,
-      name,
-      email,
-      phoneNumber,
-      profilePicture,
-      aboutMe,
-    },
-  });
 
-  return host;
+  //To complete the clean lines while testing (Noticed DB constraints were still possible)
+  try {
+    const host = await prisma.host.create({
+      data: {
+        username,
+        password,
+        name,
+        email,
+        phoneNumber,
+        profilePicture,
+        aboutMe,
+      },
+    });
+
+    return host;
+  } catch (error) {
+    return false;
+  }
 };
 
 export default createNewHost;

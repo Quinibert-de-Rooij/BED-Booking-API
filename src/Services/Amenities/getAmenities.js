@@ -1,9 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 
-const getAmenities = async () => {
+const getAmenities = async (name) => {
   const prisma = new PrismaClient();
-  const amenities = await prisma.amenity.findMany();
-
+  const recordCount = await prisma.amenity.count({
+    where: {
+      name: {
+        contains: name,
+      },
+    },
+  });
+  console.log(`Q Says: records found for your amenity query: `, recordCount);
+  const amenities = await prisma.amenity.findMany({
+    where: {
+      name: {
+        contains: name,
+      },
+    },
+  });
   return amenities;
 };
 
